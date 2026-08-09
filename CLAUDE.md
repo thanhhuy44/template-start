@@ -10,27 +10,27 @@ TanStack Start fullstack template with React 19, oRPC type-safe API, Drizzle ORM
 
 ```bash
 # Dev server on port 3000
-npm run dev
+bun dev
 
 # Lint & format
-npm run lint                   # ESLint
-npm run format                 # Prettier write + ESLint fix
-npm run check                  # Prettier check only
+bun run lint                   # ESLint
+bun run format                 # Prettier write + ESLint fix
+bun run check                  # Prettier check only
 
 # Database (Drizzle Kit, reads .env.local then .env)
-npm run db:generate            # Generate migrations from schema changes
-npm run db:migrate             # Apply pending migrations
-npm run db:push                # Push schema directly to DB (dev only)
-npm run db:studio              # Interactive DB GUI
+bun run db:generate            # Generate migrations from schema changes
+bun run db:migrate             # Apply pending migrations
+bun run db:push                # Push schema directly to DB (dev only)
+bun run db:studio              # Interactive DB GUI
 
 # Auth schema generation
-npx @better-auth/cli generate --config src/lib/auth.ts
+bunx @better-auth/cli generate --config src/lib/auth.ts
 
 # Add Shadcn UI components (new-york style, lucide icons)
-pnpm dlx shadcn@latest add <component>
+bunx shadcn@latest add <component>
 
 # Build
-npm run build
+bun run build
 ```
 
 ## Architecture
@@ -113,4 +113,4 @@ When building end-to-end features, follow this order:
 - **Prettier**: no semicolons, single quotes, trailing commas.
 - **ESLint**: TanStack config base with relaxed cycle/import-order/require-await rules.
 - **Vite plugins order**: devtools, tailwindcss, tanstackStart, viteReact (react must come AFTER tanstackStart).
-- **Package manager**: pnpm (see `pnpm.onlyBuiltDependencies` in package.json).
+- **Package manager**: bun (uses `bun.lock` for deterministic dependency resolution).

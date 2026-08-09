@@ -5,8 +5,8 @@ Welcome to your new TanStack Start app!
 To run this application:
 
 ```bash
-npm install
-npm run dev
+bun install
+bun dev
 ```
 
 # Building For Production
@@ -14,7 +14,7 @@ npm run dev
 To build this application for production:
 
 ```bash
-npm run build
+bun run build
 ```
 
 ## Styling
@@ -36,9 +36,9 @@ If you prefer not to use Tailwind CSS:
 This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
 
 ```bash
-npm run lint
-npm run format
-npm run check
+bun run lint
+bun run format
+bun run check
 ```
 
 
@@ -47,7 +47,7 @@ npm run check
 Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
 
 ```bash
-pnpm dlx shadcn@latest add button
+bunx shadcn@latest add button
 ```
 
 
@@ -74,7 +74,7 @@ console.log(env.VITE_APP_TITLE);
 1. Generate and set the `BETTER_AUTH_SECRET` environment variable in your `.env.local`:
 
    ```bash
-   npx -y @better-auth/cli secret
+   bunx @better-auth/cli secret
    ```
 
 2. Visit the [Better Auth documentation](https://www.better-auth.com) to unlock the full potential of authentication in your app.
@@ -99,7 +99,7 @@ export const auth = betterAuth({
 Then run migrations:
 
 ```bash
-npx -y @better-auth/cli migrate
+bunx @better-auth/cli migrate
 ```
 
 

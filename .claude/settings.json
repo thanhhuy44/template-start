@@ -9,7 +9,7 @@
       "WebFetch",
       "WebSearch",
       "Bash(bun *)",
-      "Bash(npm *)"
+      "Bash(bun *)"
     ]
   },
   "spinnerVerbs": {

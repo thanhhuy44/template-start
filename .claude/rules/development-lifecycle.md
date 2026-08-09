@@ -37,10 +37,11 @@ export type Post = typeof posts.$inferSelect
 export type NewPost = typeof posts.$inferInsert
 ```
 
-*CLI Command:*
+_CLI Command:_
+
 ```bash
-npm run db:generate # Generate SQL migration in drizzle/
-npm run db:migrate  # Apply migration to PostgreSQL
+bun run db:generate # Generate SQL migration in drizzle/
+bun run db:migrate  # Apply migration to PostgreSQL
 ```
 
 ---
@@ -61,7 +62,12 @@ export const listPosts = os
   .handler(async ({ input }) => {
     const limit = 10
     const offset = (input.page - 1) * limit
-    return db.select().from(posts).orderBy(desc(posts.createdAt)).limit(limit).offset(offset)
+    return db
+      .select()
+      .from(posts)
+      .orderBy(desc(posts.createdAt))
+      .limit(limit)
+      .offset(offset)
   })
 
 export const findPost = os
@@ -82,13 +88,18 @@ export const createPost = os
 export const deletePost = os
   .input(z.object({ id: z.number() }))
   .handler(async ({ input }) => {
-    const [deleted] = await db.delete(posts).where(eq(posts.id, input.id)).returning()
-    if (!deleted) throw new ORPCError('NOT_FOUND', { message: 'Post not found' })
+    const [deleted] = await db
+      .delete(posts)
+      .where(eq(posts.id, input.id))
+      .returning()
+    if (!deleted)
+      throw new ORPCError('NOT_FOUND', { message: 'Post not found' })
     return { success: true }
   })
 ```
 
 Add to router index (`src/orpc/router/index.ts`):
+
 ```ts
 import { listPosts, findPost, createPost, deletePost } from './posts'
 
@@ -123,7 +134,7 @@ export const Route = createFileRoute('/posts/')({
   loaderDeps: ({ search: { page } }) => ({ page }),
   loader: async ({ deps, context }) => {
     await context.queryClient.ensureQueryData(
-      orpc.posts.list.queryOptions({ input: { page: deps.page } })
+      orpc.posts.list.queryOptions({ input: { page: deps.page } }),
     )
   },
   component: PostsPage,

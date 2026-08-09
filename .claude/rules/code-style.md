@@ -12,7 +12,11 @@ These rules apply to all TypeScript and React code in this codebase.
 
 - **No `function` Declarations**: Always use ES6 arrow functions for components, handlers, callbacks, server functions, and helper functions.
   ```tsx
-  export const MyComponent = ({ title }: { title: string }): React.ReactNode => {
+  export const MyComponent = ({
+    title,
+  }: {
+    title: string
+  }): React.ReactNode => {
     return <div>{title}</div>
   }
 
@@ -28,4 +32,4 @@ These rules apply to all TypeScript and React code in this codebase.
 
 ## Clean Code & Workflow Efficiency
 
-- **Clean Code First (No Redundant Typechecks/Builds)**: Do NOT run `typecheck` (e.g. `tsc`), `npm run build`, or build scripts after completing every small code snippet or incremental modification. Focus first on writing clean, well-structured, readable, and maintainable code. Run typecheck or build commands only at major feature milestones or when explicitly requested.
+- **Clean Code First (No Redundant Typechecks/Builds)**: Do NOT run `typecheck` (e.g. `tsc`), `bun run build`, or build scripts after completing every small code snippet or incremental modification. Focus first on writing clean, well-structured, readable, and maintainable code. Run typecheck or build commands only at major feature milestones or when explicitly requested.
