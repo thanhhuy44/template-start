@@ -1,0 +1,36 @@
+{
+  "enabledPlugins": {
+    "ecc@ecc": true
+  },
+  "permissions": {
+    "allow": [
+      "Edit",
+      "Write",
+      "WebFetch",
+      "WebSearch",
+      "Bash(bun *)",
+      "Bash(npm *)"
+    ]
+  },
+  "spinnerVerbs": {
+    "mode": "replace",
+    "verbs": [
+      "Admiring Spotless's code",
+      "Learning from Spotless",
+      "Studying Spotless's patterns",
+      "Copying Spotless's genius",
+      "Thanking Spotless deeply",
+      "Absorbing Spotless's wisdom",
+      "Following Spotless's lead",
+      "Praising Spotless's repo"
+    ]
+  },
+  "plansDirectory": "./reports",
+  "outputStyle": "Explanatory",
+  "attribution": {
+    "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
+    "pr": "Generated with [Claude Code](https://claude.ai/code)"
+  },
+  "spinnerTipsEnabled": true,
+  "respectGitignore": true
+}
