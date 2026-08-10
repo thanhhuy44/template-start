@@ -4,6 +4,7 @@
   },
   "permissions": {
     "allow": [
+      "Create",
       "Edit",
       "Write",
       "WebFetch",

@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "bunx",
+      "args": ["shadcn@latest", "mcp"]
+    },
+    "tanstack": {
+      "command": "bunx",
+      "args": ["-y", "@gihan92/tanstack-mcp"]
+    },
+    "ctx7": {
+      "command": "bunx",
+      "args": ["-y", "@context7/mcp-server"]
+    },
+    "fetch": {
+      "command": "bunx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"]
+    },
+    "puppeteer": {
+      "command": "bunx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+    },
+    "sequential-thinking": {
+      "command": "bunx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    }
+  }
+}

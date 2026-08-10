@@ -2,9 +2,6 @@
   "name": "template-start",
   "private": true,
   "type": "module",
-  "imports": {
-    "@/*": "./src/*"
-  },
   "scripts": {
     "dev": "vite dev --port 3000",
     "generate-routes": "tsr generate",
@@ -65,6 +62,7 @@
     "dotenv": "^17.3.1",
     "eslint": "^9.20.0",
     "prettier": "^3.8.1",
+    "shadcn": "^4.16.2",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
     "vite": "^8.0.0"
