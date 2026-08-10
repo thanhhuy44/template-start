@@ -37,7 +37,7 @@ bun run build
 
 ### Path Aliases
 
-Two aliases resolve to `src/`: `#/` (Node subpath imports in package.json) and `@/` (tsconfig paths). Shadcn components use `#/` convention. Both work interchangeably.
+Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `@/` (tsconfig paths). Shadcn components use `@/` convention. Both work interchangeably.
 
 ### Routing (TanStack Router - file-based)
 

@@ -53,8 +53,8 @@ Define inputs, output schemas with Zod, and server handler accessing Drizzle ORM
 ```ts
 import { os, ORPCError } from '@orpc/server'
 import { z } from 'zod'
-import { db } from '#/db'
-import { posts } from '#/db/schema'
+import { db } from '@/db'
+import { posts } from '@/db/schema'
 import { eq, desc } from 'drizzle-orm'
 
 export const listPosts = os
@@ -122,8 +122,8 @@ Validate search params with Zod and prefetch query data in the route loader.
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
-import { PostsPage } from '#/features/posts'
-import { orpc } from '#/orpc/client'
+import { PostsPage } from '@/features/posts'
+import { orpc } from '@/orpc/client'
 
 const searchSchema = z.object({
   page: z.number().catch(1),

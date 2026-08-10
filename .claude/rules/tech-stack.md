@@ -10,7 +10,7 @@ This reference provides code examples and architectural rules for TanStack Route
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
-import { orpc } from '#/orpc/client'
+import { orpc } from '@/orpc/client'
 
 const searchSchema = z.object({
   page: z.number().catch(1),
@@ -34,7 +34,7 @@ export const Route = createFileRoute('/posts/')({
 ### Protected Layout Guard (`src/routes/_authed.tsx`)
 ```tsx
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { authClient } from '#/lib/auth-client'
+import { authClient } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/_authed')({
   beforeLoad: async ({ location }) => {
@@ -89,7 +89,7 @@ import { createTanstackQueryUtils } from '@orpc/tanstack-query'
 import { getRequestHeaders } from '@tanstack/react-start/server'
 import { createIsomorphicFn } from '@tanstack/react-start'
 import type { RouterClient } from '@orpc/server'
-import router from '#/orpc/router'
+import router from '@/orpc/router'
 
 const getORPCClient = createIsomorphicFn()
   .server(() =>
@@ -142,8 +142,8 @@ export const postsRelations = relations(posts, ({ one }) => ({
 
 ### Database Transactions
 ```ts
-import { db } from '#/db'
-import { posts, users } from '#/db/schema'
+import { db } from '@/db'
+import { posts, users } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
 export const createPostWithAudit = async (title: string, authorId: number): Promise<typeof posts.$inferSelect> => {

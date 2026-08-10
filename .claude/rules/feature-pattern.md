@@ -67,7 +67,7 @@ import {
 } from 'react'
 import { useSearch } from '@tanstack/react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { orpc } from '#/orpc/client'
+import { orpc } from '@/orpc/client'
 
 type Action = 'detail' | 'update' | 'delete' | null
 type Post = typeof orpc.posts.list.$inferOutput[number]
@@ -268,8 +268,8 @@ export const DeleteModal = (): React.ReactNode => {
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
-import { PostsPage } from '#/features/posts'
-import { orpc } from '#/orpc/client'
+import { PostsPage } from '@/features/posts'
+import { orpc } from '@/orpc/client'
 
 const searchSchema = z.object({
   page: z.number().catch(1),
