@@ -11,7 +11,10 @@
       "WebSearch",
       "Bash(bun *)",
       "Bash(bun run *)",
-      "Bash(bunx *)"
+      "Bash(bunx *)",
+      "PowerShell(bun *)",
+      "PowerShell(bun run *)",
+      "PowerShell(bunx *)"
     ]
   },
   "spinnerVerbs": {
@@ -24,7 +27,13 @@
       "Thanking Spotless deeply",
       "Absorbing Spotless's wisdom",
       "Following Spotless's lead",
-      "Praising Spotless's repo"
+      "Praising Spotless's repo",
+      "Convincing bugs to become features",
+      "Brewing a cup of virtual coffee",
+      "Asking AI gods for wisdom",
+      "Consulting Stack Overflow in spirit",
+      "Đang xin vía code chạy 1 lần ăn ngay",
+      "Biến bug thành feature đỉnh cao"
     ]
   },
   "plansDirectory": "./reports",
@@ -37,7 +46,6 @@
   "respectGitignore": true,
   "enabledMcpjsonServers": [
     "shadcn",
-    "tanstack",
     "ctx7",
     "fetch",
     "puppeteer",

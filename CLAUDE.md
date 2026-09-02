@@ -93,11 +93,21 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 - **Infer from schemas** - Use `z.infer<typeof schema>`, `typeof table.$inferSelect` / `$inferInsert`. Don't duplicate types.
 - **No premature memoization** - React 19 compiler handles it. Only add `useMemo`/`useCallback`/`React.memo` after profiling confirms a bottleneck, with a comment explaining why.
 
-## MCP Usage Guidelines
+## MCP & CLI Usage Guidelines
 
 - **Proactive by Default**: Inspect and use relevant MCP tools (e.g. Context7 for docs, browser DevTools for UI verification, DB/API tools) automatically without waiting for explicit user prompts.
 - **shadcn/ui MCP — Mandatory for UI Development**: When implementing, modifying, or refactoring UI components, Claude Code MUST proactively use the available shadcn/ui MCP whenever applicable.
-- **Verification & Accuracy**: Prefer MCP over guessing or static knowledge. Before declaring a task complete, verify results using available MCP tools.
+- **TanStack CLI over TanStack MCP**: For all tasks related to the TanStack ecosystem (searching docs, querying documentation, discovering libraries, add-ons, or templates), use direct `tanstack` CLI commands instead of TanStack MCP (`tanstack mcp` is deprecated/removed).
+  - **Prerequisite / Installation**: If `tanstack` command is not available in the environment, suggest the user install it globally (`bun add -g @tanstack/cli` / `npm i -g @tanstack/cli`) or run via `bunx @tanstack/cli`.
+  - **Deterministic JSON Output**: Always append `--json` to `tanstack` commands for reliable parsing.
+  - **Key Commands**:
+    - Search Docs: `tanstack search-docs "<query>" [--library <lib>] --json`
+    - Read Specific Doc: `tanstack doc query <doc-path> --json`
+    - List Libraries: `tanstack libraries --json`
+    - Query Ecosystem: `tanstack ecosystem [--category <category>] --json`
+    - List Add-ons: `tanstack create --list-add-ons --framework React --json`
+    - Add-on Details: `tanstack create --addon-details <addon> --framework React --json`
+- **Verification & Accuracy**: Prefer MCP/CLI over guessing or static knowledge. Before declaring a task complete, verify results using available tools.
 
 ## Anti-useState / Anti-useEffect Pattern
 
