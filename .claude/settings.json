@@ -10,7 +10,8 @@
       "WebFetch",
       "WebSearch",
       "Bash(bun *)",
-      "Bash(bun *)"
+      "Bash(bun run *)",
+      "Bash(bunx *)"
     ]
   },
   "spinnerVerbs": {
@@ -33,5 +34,13 @@
     "pr": "Generated with [Claude Code](https://claude.ai/code)"
   },
   "spinnerTipsEnabled": true,
-  "respectGitignore": true
+  "respectGitignore": true,
+  "enabledMcpjsonServers": [
+    "shadcn",
+    "tanstack",
+    "ctx7",
+    "fetch",
+    "puppeteer",
+    "sequential-thinking"
+  ]
 }

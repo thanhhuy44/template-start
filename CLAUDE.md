@@ -93,6 +93,40 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 - **Infer from schemas** - Use `z.infer<typeof schema>`, `typeof table.$inferSelect` / `$inferInsert`. Don't duplicate types.
 - **No premature memoization** - React 19 compiler handles it. Only add `useMemo`/`useCallback`/`React.memo` after profiling confirms a bottleneck, with a comment explaining why.
 
+## MCP Usage Guidelines
+
+- **Proactive by Default**: Inspect and use relevant MCP tools (e.g. Context7 for docs, browser DevTools for UI verification, DB/API tools) automatically without waiting for explicit user prompts.
+- **shadcn/ui MCP — Mandatory for UI Development**: When implementing, modifying, or refactoring UI components, Claude Code MUST proactively use the available shadcn/ui MCP whenever applicable.
+- **Verification & Accuracy**: Prefer MCP over guessing or static knowledge. Before declaring a task complete, verify results using available MCP tools.
+
+## Anti-useState / Anti-useEffect Pattern
+
+Avoid `useState` and `useEffect` by default in React code. Prefer simpler, declarative patterns:
+
+### Preferred Alternatives
+- **Derived / Computed Values**: Calculate directly during render; derive from existing props/state/context/constants.
+- **Server / Query Data**: Use project query layer (`oRPC` / TanStack Query) instead of manual `useEffect` fetching.
+- **URL / Search State**: Store filter and search parameters in URL search params.
+- **Event-driven Logic**: Perform state transitions directly inside event handlers.
+- **Form State**: Use project form primitives/resolvers (`react-hook-form` + `zod`).
+
+### `useEffect` Rules
+- **Do NOT use for**: Derived state, data transformations, synchronizing state, data fetching (when queries exist), handling user events, or work that belongs on the server.
+- **Key Question**: *"Is this an external side effect, or state synchronization?"* Do not use effects for state sync.
+
+### `useState` Rules
+- **Do NOT use for**: Storing values that can be derived from props, state, URL params, server data, form state, or constants. Avoid duplicated state and maintain a single source of truth.
+
+### Exceptions
+- Legitimate use cases: Local interactive UI state (non-derivable), external subscriptions, browser API lifecycle sync, timers, imperative 3rd-party libs, WebSockets. Require clear code justification.
+
+## Code Review & Verification
+
+Before completing any task:
+1. Inspect code for unnecessary `useState` / `useEffect` and refactor to derived/event-driven patterns.
+2. Avoid introducing non-essential synchronization state.
+3. Verify changes using relevant MCP tools whenever available.
+
 ### Structural
 - **Thin route files** - Routes handle routing, loaders, search params only. Domain logic lives in `src/features/<name>/`.
 - **Feature modules** in `src/features/<name>/` - Feature-specific UI, forms, hooks, helpers.
