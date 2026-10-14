@@ -1,6 +1,15 @@
 {
+  "extraKnownMarketplaces": {
+    "filixer-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "thanhhuy44/filixer-claude-plugin"
+      }
+    }
+  },
   "enabledPlugins": {
-    "ecc@ecc": true
+    "ecc@ecc": true,
+    "filixer@filixer-marketplace": true
   },
   "permissions": {
     "allow": [

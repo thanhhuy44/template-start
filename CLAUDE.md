@@ -88,6 +88,7 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 ## Code Rules
 
 ### Mandatory
+
 - **ES6 arrow functions only** - No `function` declarations for components, handlers, helpers.
 - **Explicit type annotations** - Annotate params, return types, props. Never use `any`.
 - **Infer from schemas** - Use `z.infer<typeof schema>`, `typeof table.$inferSelect` / `$inferInsert`. Don't duplicate types.
@@ -114,6 +115,7 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 Avoid `useState` and `useEffect` by default in React code. Prefer simpler, declarative patterns:
 
 ### Preferred Alternatives
+
 - **Derived / Computed Values**: Calculate directly during render; derive from existing props/state/context/constants.
 - **Server / Query Data**: Use project query layer (`oRPC` / TanStack Query) instead of manual `useEffect` fetching.
 - **URL / Search State**: Store filter and search parameters in URL search params.
@@ -121,23 +123,43 @@ Avoid `useState` and `useEffect` by default in React code. Prefer simpler, decla
 - **Form State**: Use project form primitives/resolvers (`react-hook-form` + `zod`).
 
 ### `useEffect` Rules
+
 - **Do NOT use for**: Derived state, data transformations, synchronizing state, data fetching (when queries exist), handling user events, or work that belongs on the server.
-- **Key Question**: *"Is this an external side effect, or state synchronization?"* Do not use effects for state sync.
+- **Key Question**: _"Is this an external side effect, or state synchronization?"_ Do not use effects for state sync.
 
 ### `useState` Rules
+
 - **Do NOT use for**: Storing values that can be derived from props, state, URL params, server data, form state, or constants. Avoid duplicated state and maintain a single source of truth.
 
 ### Exceptions
+
 - Legitimate use cases: Local interactive UI state (non-derivable), external subscriptions, browser API lifecycle sync, timers, imperative 3rd-party libs, WebSockets. Require clear code justification.
+
+## Component Internal Structure & Declaration Order
+
+When authoring or refactoring any React component file, strictly maintain the following top-to-bottom layout order:
+
+1. **Imports**: External libraries first, followed by internal aliases (`@/...`), styles/constants, and types.
+2. **Constants Outside Component**: Static configurations, pure helper functions, or stable constants declared outside the component function.
+3. **Component Name & Signature**: Named ES6 arrow function (`export const MyComponent = (props: Props): ReactNode => {`).
+4. **`useState`**: Local interactive UI states.
+5. **Custom Hooks**: Standard hooks (`useTranslation`, router hooks `useParams`/`useSearch`, `usehooks-ts`, context hooks `useXContext`, store selectors).
+6. **Other `const` & `useMemo`**: Derived calculations, computed values, and memoized variables.
+7. **`useQuery` & `useMutation`**: TanStack Query server data fetching and mutations.
+8. **Functions & Handlers**: Event callbacks, form submit handlers, and helper methods.
+9. **`useEffect`**: Imperative lifecycle side effects (strictly follow the Anti-useEffect rule; use only when non-derivable).
+10. **DOM / JSX Return**: Return statement rendering Ant Design components (`return (<Flex>...</Flex>);`).
 
 ## Code Review & Verification
 
 Before completing any task:
+
 1. Inspect code for unnecessary `useState` / `useEffect` and refactor to derived/event-driven patterns.
 2. Avoid introducing non-essential synchronization state.
 3. Verify changes using relevant MCP tools whenever available.
 
 ### Structural
+
 - **Thin route files** - Routes handle routing, loaders, search params only. Domain logic lives in `src/features/<name>/`.
 - **Feature modules** in `src/features/<name>/` - Feature-specific UI, forms, hooks, helpers.
 - **Reusable primitives** in `src/components/ui/` - Generic components (Button, Input, Card).
@@ -146,6 +168,7 @@ Before completing any task:
 ### Feature Development Lifecycle
 
 When building end-to-end features, follow this order:
+
 1. **Schema** - Define Drizzle table in `src/db/schema.ts`, generate migration.
 2. **Procedure** - Create oRPC procedure in `src/orpc/router/` with Zod validation.
 3. **Route & Loader** - Prefetch in route loader via `queryClient.ensureQueryData(orpc.<name>.queryOptions(...))`.
