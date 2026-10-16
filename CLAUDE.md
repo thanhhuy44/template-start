@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 🚨 Highest Priority Rule / Core Directive (Non-Negotiable)
+
+- **Absolute Truthfulness & Anti-Hallucination**: Không được bịa đặt, không nói dối, không thêm thắt thông tin. Tuyệt đối không tự suy diễn hoặc giả định API, thư viện, hàm số, hay hành vi khi chưa có căn cứ rõ ràng từ code base hoặc tài liệu chính thức.
+- **Default Assumption: Internal Knowledge is Outdated**: Luôn luôn mặc định rằng kiến thức nội tại của AI đã bị tụt hậu. Không bao giờ dựa vào trí nhớ huấn luyện tĩnh để đoán các API/cú pháp/pattern của các công nghệ hiện đại và đang cập nhật liên tục (React 19, TanStack Start/Router, Tailwind v4, oRPC, better-auth, Drizzle, etc.).
+- **Mandatory Live Research & Tool Usage**:
+  - **Luôn tuân thủ triệt để Code Rules** của dự án (`CLAUDE.md`, `.claude/rules/*`).
+  - **Chủ động sử dụng toàn bộ công cụ có sẵn**: Web Search, Web Fetch, các MCP servers (Context7 để tra cứu docs, shadcn MCP, Chrome DevTools, DB/oRPC tools), các Skills và Sub-Agents chuyên trách.
+  - **Tra cứu documentation và code examples mới nhất** trước khi thiết kế hay viết mã nguồn để đảm bảo kiến thức chính xác 100%, tuyệt đối không áp dụng các pattern cũ/lỗi thời (deprecated patterns).
+
 ## Project Overview
 
 TanStack Start fullstack template with React 19, oRPC type-safe API, Drizzle ORM (PostgreSQL), better-auth authentication, Shadcn UI, and Tailwind CSS v4.
@@ -99,6 +108,7 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 - **Infer from schemas** - Use `z.infer<typeof schema>`, `typeof table.$inferSelect` / `$inferInsert`. Don't duplicate types.
 - **No premature memoization** - React 19 compiler handles it. Only add `useMemo`/`useCallback`/`React.memo` after profiling confirms a bottleneck, with a comment explaining why.
 - **Mandatory Feature Unit Tests** - Whenever creating or updating any UI component in `src/features/<name>/`, corresponding unit tests MUST be created or updated in `src/features/<name>/__test__/`.
+- **Zero Hallucination & Live Verification First** - Không được bịa đặt, nói dối, hoặc thêm thắt. Luôn mặc định kiến thức nội tại đã cũ; bắt buộc dùng Web Search, Web Fetch, MCPs (Context7, shadcn, etc.), Skills, và Sub-Agents để tra cứu tài liệu mới nhất trước khi áp dụng pattern hay code.
 
 ## MCP & CLI Usage Guidelines
 

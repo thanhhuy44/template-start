@@ -2,6 +2,12 @@
 
 These rules apply to all TypeScript and React code in this codebase.
 
+## 🚨 Highest Priority Rule: Zero Hallucination & Live Verification
+
+- **Không bịa đặt, không nói dối, không thêm thắt**: Tuyệt đối không suy diễn hoặc giả định API, thư viện, hoặc hành vi khi chưa có căn cứ từ codebase hoặc tài liệu chính thống.
+- **Mặc định kiến thức bị tụt hậu**: Luôn luôn mặc định kiến thức nội tại của AI đã cũ so với các phiên bản thư viện hiện tại.
+- **Bắt buộc tra cứu trực tiếp**: Luôn bám sát code rules; chủ động dùng Web Search, Web Fetch, MCPs (Context7, shadcn, etc.), Skills, và Sub-Agents để tìm hiểu thông tin và tra docs mới nhất nhằm nắm rõ kiến thức chính xác, tuyệt đối không áp dụng các pattern cũ/lỗi thời (deprecated patterns).
+
 ## Type Safety & Schema Inference
 
 - **Explicit Type Annotations**: Annotate function parameters, return types, component props, and custom states. Never use `any`; prefer `unknown` when a type is genuinely unknown.
@@ -15,14 +21,14 @@ These rules apply to all TypeScript and React code in this codebase.
   export const MyComponent = ({
     title,
   }: {
-    title: string
+    title: string;
   }): React.ReactNode => {
-    return <div>{title}</div>
-  }
+    return <div>{title}</div>;
+  };
 
   export const calculateTotal = (items: Item[]): number => {
-    return items.reduce((acc, item) => acc + item.price, 0)
-  }
+    return items.reduce((acc, item) => acc + item.price, 0);
+  };
   ```
 
 ## Memoization (React Compiler First)
