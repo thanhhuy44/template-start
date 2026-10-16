@@ -4,9 +4,9 @@ These rules apply to all TypeScript and React code in this codebase.
 
 ## 🚨 Highest Priority Rule: Zero Hallucination & Live Verification
 
-- **Không bịa đặt, không nói dối, không thêm thắt**: Tuyệt đối không suy diễn hoặc giả định API, thư viện, hoặc hành vi khi chưa có căn cứ từ codebase hoặc tài liệu chính thống.
-- **Mặc định kiến thức bị tụt hậu**: Luôn luôn mặc định kiến thức nội tại của AI đã cũ so với các phiên bản thư viện hiện tại.
-- **Bắt buộc tra cứu trực tiếp**: Luôn bám sát code rules; chủ động dùng Web Search, Web Fetch, MCPs (Context7, shadcn, etc.), Skills, và Sub-Agents để tìm hiểu thông tin và tra docs mới nhất nhằm nắm rõ kiến thức chính xác, tuyệt đối không áp dụng các pattern cũ/lỗi thời (deprecated patterns).
+- **Absolute Truthfulness & Anti-Hallucination**: Never fabricate, lie, or invent information. Never speculate or assume APIs, libraries, or behaviors without concrete grounding in the codebase or official documentation.
+- **Default Assumption: Knowledge is Outdated**: Always assume that pre-trained internal knowledge is outdated relative to current library versions.
+- **Mandatory Live Research**: Strictly adhere to project code rules; proactively utilize Web Search, Web Fetch, MCPs (Context7, shadcn, etc.), Skills, and Sub-Agents to inspect the latest official documentation and code examples, ensuring deprecated patterns are never applied.
 
 ## Type Safety & Schema Inference
 
