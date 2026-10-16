@@ -9,12 +9,17 @@ src/features/<feature_name>/
 ├── index.tsx                  # Page component — assembles layout inside ContextProvider
 ├── context/
 │   └── index.tsx              # Feature Context — all state, queries, mutations
-└── components/
-    ├── list.tsx               # List view — consumes listQuery from context
-    ├── card.tsx               # Detail card/drawer — consumes detailQuery from context
-    ├── delete.tsx             # Delete confirmation modal — consumes deleteMutation
-    ├── create-form.tsx        # (optional) Create form dialog
-    └── update-form.tsx        # (optional) Update form dialog
+├── components/
+│   ├── list.tsx               # List view — consumes listQuery from context
+│   ├── card.tsx               # Detail card/drawer — consumes detailQuery from context
+│   ├── delete.tsx             # Delete confirmation modal — consumes deleteMutation
+│   ├── create-form.tsx        # (optional) Create form dialog
+│   └── update-form.tsx        # (optional) Update form dialog
+└── __test__/                  # Mandatory unit tests
+    ├── list.test.tsx          # Component unit test
+    ├── card.test.tsx          # Component unit test
+    ├── delete.test.tsx        # Component unit test
+    └── page.test.tsx          # Page assembly test
 ```
 
 ## Non-Negotiable Rules
@@ -27,6 +32,7 @@ src/features/<feature_name>/
 6. **Mutations reset state on success**: Every mutation's `onSuccess` callback resets `action` to `null` and `current` to `null`, then invalidates the list query cache.
 7. **Type-safe from oRPC**: Query and mutation types are inferred directly from oRPC procedure definitions (`typeof orpc.<feature>.<method>.$inferOutput`). Never manually duplicate API response types.
 8. **Reusable Primitives in `src/components/ui/`**: Place pure, generic UI components (Buttons, Inputs, Cards) in `src/components/ui/`.
+9. **Mandatory Unit Tests in `__test__/`**: Every UI component created or updated in `src/features/<feature_name>/` MUST have corresponding unit tests in `__test__/` covering render and user interaction states using Context mocking.
 
 ---
 
@@ -35,10 +41,10 @@ src/features/<feature_name>/
 ### 1. Page Component (`src/features/posts/index.tsx`)
 
 ```tsx
-import { ContextProvider } from './context'
-import { List } from './components/list'
-import { DetailCard } from './components/card'
-import { DeleteModal } from './components/delete'
+import { DetailCard } from "./components/card";
+import { DeleteModal } from "./components/delete";
+import { List } from "./components/list";
+import { ContextProvider } from "./context";
 
 export const PostsPage = (): React.ReactNode => {
   return (
@@ -49,8 +55,8 @@ export const PostsPage = (): React.ReactNode => {
         <DeleteModal />
       </div>
     </ContextProvider>
-  )
-}
+  );
+};
 ```
 
 ### 2. Feature Context (`src/features/posts/context/index.tsx`)
@@ -58,62 +64,68 @@ export const PostsPage = (): React.ReactNode => {
 ```tsx
 import {
   createContext,
-  useContext,
-  useMemo,
-  useState,
   type Dispatch,
   type ReactNode,
   type SetStateAction,
-} from 'react'
-import { useSearch } from '@tanstack/react-router'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { orpc } from '@/orpc/client'
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
-type Action = 'detail' | 'update' | 'delete' | null
-type Post = typeof orpc.posts.list.$inferOutput[number]
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSearch } from "@tanstack/react-router";
+
+import { orpc } from "@/orpc/client";
+
+type Action = "detail" | "update" | "delete" | null;
+type Post = (typeof orpc.posts.list.$inferOutput)[number];
 
 interface ContextType {
-  action: Action
-  setAction: Dispatch<SetStateAction<Action>>
-  current: Post | null
-  setCurrent: Dispatch<SetStateAction<Post | null>>
-  listQuery: ReturnType<typeof useQuery<Post[]>>
-  detailQuery: ReturnType<typeof useQuery<Post>>
-  deleteMutation: ReturnType<typeof useMutation>
+  action: Action;
+  setAction: Dispatch<SetStateAction<Action>>;
+  current: Post | null;
+  setCurrent: Dispatch<SetStateAction<Post | null>>;
+  listQuery: ReturnType<typeof useQuery<Post[]>>;
+  detailQuery: ReturnType<typeof useQuery<Post>>;
+  deleteMutation: ReturnType<typeof useMutation>;
 }
 
-const Context = createContext<ContextType>({} as ContextType)
+const Context = createContext<ContextType>({} as ContextType);
 
-export const ContextProvider = ({ children }: { children: ReactNode }): React.ReactNode => {
-  const [action, setAction] = useState<Action>(null)
-  const [current, setCurrent] = useState<Post | null>(null)
-  const queryClient = useQueryClient()
-  const searchParams = useSearch({ from: '/posts/' })
+export const ContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}): React.ReactNode => {
+  const [action, setAction] = useState<Action>(null);
+  const [current, setCurrent] = useState<Post | null>(null);
+  const queryClient = useQueryClient();
+  const searchParams = useSearch({ from: "/posts/" });
 
   const listQuery = useQuery(
     orpc.posts.list.queryOptions({
       input: { page: searchParams.page ?? 1 },
-    })
-  )
+    }),
+  );
 
   const detailQuery = useQuery({
     ...orpc.posts.find.queryOptions({
       input: { id: current?.id ?? 0 },
     }),
     enabled: !!current?.id,
-  })
+  });
 
   const deleteMutation = useMutation(
     orpc.posts.delete.mutationOptions({
       onSuccess: () => {
-        setAction(null)
-        setCurrent(null)
+        setAction(null);
+        setCurrent(null);
         queryClient.invalidateQueries({
           queryKey: orpc.posts.list.key(),
-        })
+        });
       },
-    })
-  )
+    }),
+  );
 
   const value = useMemo(
     () => ({
@@ -125,33 +137,33 @@ export const ContextProvider = ({ children }: { children: ReactNode }): React.Re
       detailQuery,
       deleteMutation,
     }),
-    [action, current, listQuery, detailQuery, deleteMutation]
-  )
+    [action, current, listQuery, detailQuery, deleteMutation],
+  );
 
-  return <Context.Provider value={value}>{children}</Context.Provider>
-}
+  return <Context.Provider value={value}>{children}</Context.Provider>;
+};
 
 export const usePostsContext = (): ContextType => {
-  const context = useContext(Context)
+  const context = useContext(Context);
   if (!context) {
-    throw new Error('usePostsContext must be used within ContextProvider')
+    throw new Error("usePostsContext must be used within ContextProvider");
   }
-  return context
-}
+  return context;
+};
 ```
 
 ### 3. List Component (`src/features/posts/components/list.tsx`)
 
 ```tsx
-import { usePostsContext } from '../context'
+import { usePostsContext } from "../context";
 
 export const List = (): React.ReactNode => {
-  const { listQuery, setAction, setCurrent } = usePostsContext()
-  const { isLoading, isError, data } = listQuery
+  const { listQuery, setAction, setCurrent } = usePostsContext();
+  const { isLoading, isError, data } = listQuery;
 
-  if (isLoading) return <div>Loading posts...</div>
-  if (isError) return <div className="text-red-500">Failed to load posts.</div>
-  if (!data?.length) return <div>No posts found.</div>
+  if (isLoading) return <div>Loading posts...</div>;
+  if (isError) return <div className="text-red-500">Failed to load posts.</div>;
+  if (!data?.length) return <div>No posts found.</div>;
 
   return (
     <div className="grid gap-4">
@@ -160,32 +172,33 @@ export const List = (): React.ReactNode => {
           key={post.id}
           className="p-4 border rounded cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800"
           onClick={() => {
-            setCurrent(post)
-            setAction('detail')
+            setCurrent(post);
+            setAction("detail");
           }}
         >
           <h3 className="font-bold text-lg">{post.title}</h3>
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 ```
 
 ### 4. Detail Card Component (`src/features/posts/components/card.tsx`)
 
 ```tsx
-import { usePostsContext } from '../context'
+import { usePostsContext } from "../context";
 
 export const DetailCard = (): React.ReactNode => {
-  const { action, setAction, current, setCurrent, detailQuery } = usePostsContext()
+  const { action, setAction, current, setCurrent, detailQuery } =
+    usePostsContext();
 
-  if (action !== 'detail') return null
+  if (action !== "detail") return null;
 
   const handleClose = (): void => {
-    setAction(null)
-    setCurrent(null)
-  }
+    setAction(null);
+    setCurrent(null);
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
@@ -198,7 +211,7 @@ export const DetailCard = (): React.ReactNode => {
         )}
         <div className="mt-6 flex justify-end gap-2">
           <button
-            onClick={() => setAction('delete')}
+            onClick={() => setAction("delete")}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
           >
             Delete
@@ -212,36 +225,39 @@ export const DetailCard = (): React.ReactNode => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 ```
 
 ### 5. Delete Dialog Component (`src/features/posts/components/delete.tsx`)
 
 ```tsx
-import { usePostsContext } from '../context'
+import { usePostsContext } from "../context";
 
 export const DeleteModal = (): React.ReactNode => {
-  const { action, setAction, current, setCurrent, deleteMutation } = usePostsContext()
+  const { action, setAction, current, setCurrent, deleteMutation } =
+    usePostsContext();
 
-  if (action !== 'delete') return null
+  if (action !== "delete") return null;
 
   const handleClose = (): void => {
-    setAction(null)
-    setCurrent(null)
-  }
+    setAction(null);
+    setCurrent(null);
+  };
 
   const handleDelete = (): void => {
     if (current?.id) {
-      deleteMutation.mutate({ id: current.id })
+      deleteMutation.mutate({ id: current.id });
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-neutral-900 p-6 rounded-lg max-w-sm w-full">
         <h3 className="text-lg font-bold">Delete "{current?.title}"?</h3>
-        <p className="text-sm text-neutral-500 mt-2">This action cannot be undone.</p>
+        <p className="text-sm text-neutral-500 mt-2">
+          This action cannot be undone.
+        </p>
         <div className="mt-6 flex justify-end gap-2">
           <button
             onClick={handleClose}
@@ -254,35 +270,36 @@ export const DeleteModal = (): React.ReactNode => {
             disabled={deleteMutation.isPending}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
           >
-            {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+            {deleteMutation.isPending ? "Deleting..." : "Delete"}
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 ```
 
 ### 6. Thin Route File (`src/routes/posts/index.tsx`)
 
 ```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { z } from 'zod'
-import { PostsPage } from '@/features/posts'
-import { orpc } from '@/orpc/client'
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
+
+import { PostsPage } from "@/features/posts";
+import { orpc } from "@/orpc/client";
 
 const searchSchema = z.object({
   page: z.number().catch(1),
-})
+});
 
-export const Route = createFileRoute('/posts/')({
+export const Route = createFileRoute("/posts/")({
   validateSearch: searchSchema,
   loaderDeps: ({ search: { page } }) => ({ page }),
   loader: async ({ deps, context }) => {
     await context.queryClient.ensureQueryData(
-      orpc.posts.list.queryOptions({ input: { page: deps.page } })
-    )
+      orpc.posts.list.queryOptions({ input: { page: deps.page } }),
+    );
   },
   component: PostsPage,
-})
+});
 ```

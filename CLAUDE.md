@@ -17,6 +17,11 @@ bun run lint                   # ESLint
 bun run format                 # Prettier write + ESLint fix
 bun run check                  # Prettier check only
 
+# Testing (Vitest)
+bun run test                   # Run all unit tests
+bun run test:watch             # Run tests in watch mode
+bun run test:coverage          # Run tests with coverage
+
 # Database (Drizzle Kit, reads .env.local then .env)
 bun run db:generate            # Generate migrations from schema changes
 bun run db:migrate             # Apply pending migrations
@@ -26,7 +31,7 @@ bun run db:studio              # Interactive DB GUI
 # Auth schema generation
 bunx @better-auth/cli generate --config src/lib/auth.ts
 
-# Add Shadcn UI components (new-york style, lucide icons)
+# Add Shadcn UI components (default style, lucide icons)
 bunx shadcn@latest add <component>
 
 # Build
@@ -75,7 +80,7 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 
 ### UI & Styling
 
-- `src/components/ui/` - Shadcn UI primitives (new-york style, zinc base, CSS variables).
+- `src/components/ui/` - Shadcn UI primitives (default style, slate base, CSS variables).
 - `src/lib/utils.ts` - `cn()` helper (clsx + tailwind-merge).
 - `src/styles.css` - Tailwind v4 (`@import 'tailwindcss'`), custom theme tokens (light/dark), custom utility classes (`.island-shell`, `.feature-card`, `.rise-in`).
 - Fonts: Manrope (sans), Fraunces (display titles via `.display-title`).
@@ -93,6 +98,7 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 - **Explicit type annotations** - Annotate params, return types, props. Never use `any`.
 - **Infer from schemas** - Use `z.infer<typeof schema>`, `typeof table.$inferSelect` / `$inferInsert`. Don't duplicate types.
 - **No premature memoization** - React 19 compiler handles it. Only add `useMemo`/`useCallback`/`React.memo` after profiling confirms a bottleneck, with a comment explaining why.
+- **Mandatory Feature Unit Tests** - Whenever creating or updating any UI component in `src/features/<name>/`, corresponding unit tests MUST be created or updated in `src/features/<name>/__test__/`.
 
 ## MCP & CLI Usage Guidelines
 
@@ -148,7 +154,7 @@ When authoring or refactoring any React component file, strictly maintain the fo
 7. **`useQuery` & `useMutation`**: TanStack Query server data fetching and mutations.
 8. **Functions & Handlers**: Event callbacks, form submit handlers, and helper methods.
 9. **`useEffect`**: Imperative lifecycle side effects (strictly follow the Anti-useEffect rule; use only when non-derivable).
-10. **DOM / JSX Return**: Return statement rendering Ant Design components (`return (<Flex>...</Flex>);`).
+10. **DOM / JSX Return**: Return statement rendering Ant Design components (`return (<div>...</div>);`).
 
 ## Code Review & Verification
 
