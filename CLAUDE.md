@@ -103,6 +103,8 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 
 ### Mandatory
 
+- **Outdated Training Data Awareness** - Always assume internal pre-trained memory is outdated, frozen, and incomplete. Never rely on static recall for modern frameworks and libraries.
+- **Mandatory Live Retrieval & Honesty** - Proactively search and fetch the latest documentation from the internet using configured MCPs (Context7, TanStack CLI, domain MCPs) or web search before answering or implementing. Be strictly honest: zero tolerance for hallucinations, guessing, or fabricating non-existent APIs, options, or behavior.
 - **ES6 arrow functions only** - No `function` declarations for components, handlers, helpers.
 - **Explicit type annotations** - Annotate params, return types, props. Never use `any`.
 - **Infer from schemas** - Use `z.infer<typeof schema>`, `typeof table.$inferSelect` / `$inferInsert`. Don't duplicate types.
@@ -112,6 +114,8 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 
 ## MCP & CLI Usage Guidelines
 
+- **Knowledge Freshness & Mandatory Live Retrieval**: Pre-trained model knowledge is frozen and outdated for modern web stacks (React 19, Tailwind v4, TanStack Start/Router, oRPC, better-auth, Drizzle). The agent MUST proactively fetch live, up-to-date documentation via configured MCP tools or internet search BEFORE writing code or answering technical questions. See `.claude/rules/knowledge-retrieval-and-honesty.md`.
+- **Strict Honesty & Anti-Hallucination**: Absolute honesty is mandatory. NEVER fabricate, assume, or hallucinate non-existent functions, arguments, CSS classes, configuration options, or CLI commands. If documentation is missing or a tool fails (e.g. MCP connection error), report it truthfully and explicitly state what is verified vs. unknown.
 - **Proactive by Default**: Inspect and use relevant MCP tools (e.g. Context7 for docs, browser DevTools for UI verification, DB/API tools) automatically without waiting for explicit user prompts.
 - **shadcn/ui MCP — Mandatory for UI Development**: When implementing, modifying, or refactoring UI components, Claude Code MUST proactively use the available shadcn/ui MCP whenever applicable.
 - **TanStack CLI over TanStack MCP**: For all tasks related to the TanStack ecosystem (searching docs, querying documentation, discovering libraries, add-ons, or templates), use direct `tanstack` CLI commands instead of TanStack MCP (`tanstack mcp` is deprecated/removed).
