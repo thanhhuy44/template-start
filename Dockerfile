@@ -21,15 +21,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Copy runtime dependencies and build artifacts
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/server.ts ./server.ts
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/drizzle ./drizzle
-COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
-COPY --from=builder /app/src/db ./src/db
+# Nitro node-server output is self-contained
+COPY --from=builder /app/.output ./.output
 
 EXPOSE 3000
 
@@ -37,4 +30,4 @@ EXPOSE 3000
 HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
   CMD node --eval 'fetch("http://localhost:3000/").then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))'
 
-CMD ["npx", "tsx", "server.ts"]
+CMD ["node", ".output/server/index.mjs"]
