@@ -14,20 +14,6 @@
         "@context7/mcp-server"
       ]
     },
-    "fetch": {
-      "command": "bunx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-fetch"
-      ]
-    },
-    "puppeteer": {
-      "command": "bunx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-puppeteer"
-      ]
-    },
     "sequential-thinking": {
       "command": "bunx",
       "args": [

@@ -40,7 +40,7 @@ bun run db:studio              # Interactive DB GUI
 # Auth schema generation
 bunx @better-auth/cli generate --config src/lib/auth.ts
 
-# Add Shadcn UI components (default style, lucide icons)
+# Add Shadcn UI components (base-nova preset, Base UI, lucide icons)
 bunx shadcn@latest add <component>
 
 # Build
@@ -80,7 +80,6 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 - `src/lib/auth.ts` - Server-side auth config with `tanstackStartCookies()` plugin.
 - `src/lib/auth-client.ts` - Client-side auth instance (`authClient.useSession()`).
 - `src/routes/api/auth/$.ts` - Auth catch-all route handler.
-- `src/integrations/better-auth/header-user.tsx` - Session-aware header component.
 
 ### Environment Variables
 
@@ -89,14 +88,16 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 
 ### UI & Styling
 
-- `src/components/ui/` - Shadcn UI primitives (default style, slate base, CSS variables).
-- `src/lib/utils.ts` - `cn()` helper (clsx + tailwind-merge).
-- `src/styles.css` - Tailwind v4 (`@import 'tailwindcss'`), custom theme tokens (light/dark), custom utility classes (`.island-shell`, `.feature-card`, `.rise-in`).
-- Fonts: Manrope (sans), Fraunces (display titles via `.display-title`).
+- `components.json` - Shadcn CLI config (style `base-nova`, Base UI primitives, neutral base color, `@/components` aliases).
+- `src/components/ui/` - Shadcn UI primitives (Base UI + Nova preset, CSS variables).
+- `src/lib/utils.ts` - `cn()` re-exported from the `cn` package (shadcn v4 compiled class merging).
+- `src/styles.css` - Tailwind v4 (`@import 'tailwindcss'`), shadcn v4 theme (`@import 'shadcn/tailwind.css'`), theme tokens (light/dark).
+- Fonts: Geist Variable (sans) via `@fontsource-variable/geist`.
 
 ### TanStack Query Integration
 
-- `src/integrations/tanstack-query/root-provider.tsx` - QueryClient factory, wired into router context.
+- `src/components/root-provider.tsx` - QueryClient factory, wired into router context.
+- `src/components/devtools.tsx` - TanStack Query devtools panel plugin, registered in `src/routes/__root.tsx`.
 - SSR query integration via `@tanstack/react-router-ssr-query` in `src/router.tsx`.
 
 ## Code Rules
