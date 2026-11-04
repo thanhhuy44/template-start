@@ -1,11 +1,11 @@
 # Feature Unit Testing Rules
 
-All features in `src/features/<feature-name>/` MUST have unit tests under `src/features/<feature-name>/__test__/`.
+All features in `src/features/<feature-name>/` MUST have unit tests under `src/features/<feature-name>/__test__/`, strictly adhering to the patterns established in `src/features/todo/__test__/`.
 
 ## Non-Negotiable Testing Rules
 
 1. **Mandatory Tests for Every UI Element**:
-   - Whenever any component is created or modified in `src/features/<feature-name>/components/` or `index.tsx`, corresponding unit tests in `src/features/<feature-name>/__test__/` MUST be created or updated.
+   - Whenever any component is created or modified in `src/features/<feature-name>/components/`, `modals/`, or `index.tsx`, corresponding unit tests in `src/features/<feature-name>/__test__/` MUST be created or updated.
    - PRs or changes without corresponding tests are considered incomplete.
 
 2. **Directory & File Layout**:
@@ -16,16 +16,16 @@ All features in `src/features/<feature-name>/` MUST have unit tests under `src/f
    ├── context/
    │   └── index.tsx              # Feature Context
    ├── components/
-   │   ├── list.tsx
-   │   ├── card.tsx
-   │   ├── create-form.tsx
-   │   └── delete.tsx
+   │   ├── header.tsx             # Header component
+   │   ├── filter.tsx             # Filter & Search bar
+   │   └── table.tsx              # Table component
+   ├── modals/
+   │   ├── upsert.tsx             # Create & Edit modal
+   │   └── delete-confirm.tsx     # Delete confirmation modal
    └── __test__/
-       ├── list.test.tsx          # Tests for components/list.tsx
-       ├── card.test.tsx          # Tests for components/card.tsx
-       ├── create-form.test.tsx   # Tests for components/create-form.tsx
-       ├── delete.test.tsx        # Tests for components/delete.tsx
-       └── page.test.tsx          # Tests for index.tsx
+       ├── filter.test.tsx        # Tests for components/filter.tsx (debounced search, reset)
+       ├── table.test.tsx         # Tests for components/table.tsx (loading, empty, badges, actions, pagination)
+       └── upsert.test.tsx        # Tests for modals/upsert.tsx (create mode, edit mode, validation, cancel)
    ```
 
 3. **High-Performance Context Mocking Pattern**:
@@ -46,6 +46,7 @@ All features in `src/features/<feature-name>/` MUST have unit tests under `src/f
    - **Render states**: Test loading, error, empty, and data-loaded states.
    - **User interactions**: Test click handlers, form inputs, and close actions using `@testing-library/user-event`.
    - **Action triggers**: Test that triggering buttons properly invokes `setAction(...)` or mutation functions.
+   - **Debounced inputs**: For search inputs (such as `filter.tsx`), test that typing triggers navigation after debounce delay via `waitFor(...)`.
 
 5. **Test Runners**:
    - `bun run test` - Run full unit test suite.

@@ -6,12 +6,17 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import type { BetterAuthClientOptions } from "better-auth";
+import type { ReactAuthClient } from "better-auth/react";
+
+import { Toaster } from "@/components/ui/sonner";
 
 import TanStackQueryDevtools from "../components/devtools";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
   queryClient: QueryClient;
+  authClient: ReactAuthClient<BetterAuthClientOptions>;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
@@ -46,6 +51,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <Toaster />
         <TanStackDevtools
           config={{
             position: "bottom-right",

@@ -147,17 +147,24 @@ export const Route = createFileRoute("/posts/")({
 
 ---
 
-### Step 4: Feature Module (`src/features/posts/`)
+### Step 4: Feature Module (`src/features/<feature_name>/`)
 
-Assemble Context Provider and UI components in `src/features/posts/`:
+Assemble Context Provider, components, and modals following `src/features/todo/`:
 
 ```
-src/features/posts/
+src/features/<feature_name>/
 ├── index.tsx                 # Page layout wrapper
 ├── context/
-│   └── index.tsx             # Context holding listQuery, deleteMutation, etc.
-└── components/
-    ├── list.tsx              # Component rendering list
-    ├── card.tsx              # Component rendering detail
-    └── delete.tsx            # Component rendering delete dialog
+│   └── index.tsx             # Context holding listQuery, create/update/delete mutations
+├── components/
+│   ├── header.tsx            # Header with title and CTA
+│   ├── filter.tsx            # Debounced filter & search bar
+│   └── table.tsx             # Table with status badges, actions, and pagination
+├── modals/
+│   ├── upsert.tsx            # Unified create & update modal (react-hook-form + zodResolver)
+│   └── delete-confirm.tsx    # Delete confirmation modal
+└── __test__/                 # Context-mocked unit tests
+    ├── filter.test.tsx       # Filter component tests
+    ├── table.test.tsx        # Table component tests
+    └── upsert.test.tsx       # Upsert modal tests
 ```

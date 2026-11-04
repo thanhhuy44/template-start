@@ -182,7 +182,7 @@ Before completing any task:
 ### Structural
 
 - **Thin route files** - Routes handle routing, loaders, search params only. Domain logic lives in `src/features/<name>/`.
-- **Feature modules** in `src/features/<name>/` - Feature-specific UI, forms, hooks, helpers.
+- **Feature modules** in `src/features/<name>/` - Feature-specific UI, forms, hooks, helpers. Follow src/features/todo/ as the canonical reference pattern (components/, modals/, context/, **test**/):
 - **Reusable primitives** in `src/components/ui/` - Generic components (Button, Input, Card).
 - **Don't run typecheck/build after small changes** - Focus on clean code first. Run only at milestones or when requested.
 
