@@ -8,6 +8,7 @@ afterEach(() => {
 });
 
 // Polyfill window.matchMedia if not available in jsdom
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- jsdom may not implement matchMedia at runtime
 if (typeof window !== "undefined" && !window.matchMedia) {
   Object.defineProperty(window, "matchMedia", {
     writable: true,
@@ -25,6 +26,7 @@ if (typeof window !== "undefined" && !window.matchMedia) {
 }
 
 // Polyfill ResizeObserver
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- jsdom may not implement ResizeObserver at runtime
 if (typeof window !== "undefined" && !window.ResizeObserver) {
   window.ResizeObserver = class ResizeObserver {
     observe() {}

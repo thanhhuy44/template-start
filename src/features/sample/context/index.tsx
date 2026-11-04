@@ -1,10 +1,5 @@
-import {
-  createContext,
-  type Dispatch,
-  type ReactNode,
-  type SetStateAction,
-  useContext,
-} from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+import { createContext, useContext } from "react";
 
 export interface SampleItem {
   id: number;

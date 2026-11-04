@@ -18,42 +18,6 @@ bun run build
 bun run start
 ```
 
-## Running with Docker Compose
-
-This project includes a multi-stage `Dockerfile` (using `node:22-alpine` for the production runner) and `docker-compose.yml` for running both the TanStack Start app and PostgreSQL:
-
-### 1. Run Full Stack (App + PostgreSQL)
-
-```bash
-# Build and start all services in background
-docker compose up -d --build
-
-# View logs
-docker compose logs -f
-
-# Apply database migrations inside the app container
-docker compose exec app npm run db:migrate
-# or push schema directly in dev
-docker compose exec app npm run db:push
-
-# Stop all services
-docker compose down
-```
-
-The application will be accessible at `http://localhost:3000` and PostgreSQL at `localhost:5432`.
-
-### 2. Run Only Database for Local Development
-
-If you prefer developing on your host machine with `bun dev`:
-
-```bash
-# Start PostgreSQL database only
-docker compose up -d db
-
-# Run app locally on host
-bun dev
-```
-
 ## Styling
 
 This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.

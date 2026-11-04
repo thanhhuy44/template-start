@@ -70,7 +70,7 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 
 ### Database (Drizzle ORM + PostgreSQL)
 
-- `src/db/schema.ts` - Table definitions. Config reads `DATABASE_URL` from `.env.local`.
+- `src/db/schema/` - One file per table/module (e.g. `user.ts`, `session.ts`), barrel-exported via `src/db/schema/index.ts`. Config reads `DATABASE_URL` from `.env.local`.
 - `src/db/index.ts` - Drizzle client instance with schema.
 - `drizzle/` - Generated migration files.
 - `drizzle.config.ts` - Drizzle Kit config (loads dotenv from `.env.local`, `.env`).
@@ -190,7 +190,7 @@ Before completing any task:
 
 When building end-to-end features, follow this order:
 
-1. **Schema** - Define Drizzle table in `src/db/schema.ts`, generate migration.
+1. **Schema** - Define the Drizzle table in `src/db/schema/<table>.ts`, export it from `src/db/schema/index.ts`, generate migration.
 2. **Procedure** - Create oRPC procedure in `src/orpc/router/` with Zod validation.
 3. **Route & Loader** - Prefetch in route loader via `queryClient.ensureQueryData(orpc.<name>.queryOptions(...))`.
 4. **Feature UI** - Build components in `src/features/<name>/`, consume data via `useQuery(orpc.<name>.queryOptions(...))`.
@@ -198,7 +198,7 @@ When building end-to-end features, follow this order:
 ## Config Details
 
 - **TypeScript**: strict mode, `ES2022` target, bundler module resolution, `verbatimModuleSyntax`.
-- **Prettier**: no semicolons, single quotes, trailing commas.
+- **Prettier**: semicolons enabled, double quotes, 2-space indentation, 80-character print width, `trailingComma: 'all'`, `arrowParens: 'always'`, `endOfLine: 'auto'`; imports sorted by `@trivago/prettier-plugin-sort-imports` (react → packages → `@/` aliases → relative imports, blank-line separated).
 - **ESLint**: TanStack config base with relaxed cycle/import-order/require-await rules.
 - **Vite plugins order**: devtools, tailwindcss, tanstackStart, viteReact (react must come AFTER tanstackStart).
 - **Package manager**: bun (uses `bun.lock` for deterministic dependency resolution).
