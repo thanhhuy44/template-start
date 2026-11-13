@@ -38,7 +38,7 @@ bun run db:push                # Push schema directly to DB (dev only)
 bun run db:studio              # Interactive DB GUI
 
 # Auth schema generation
-bunx @better-auth/cli generate --config src/lib/auth.ts
+bunx @better-auth/cli generate --config src/lib/auth/index.ts
 
 # Add Shadcn UI components (base-nova preset, Base UI, lucide icons)
 bunx shadcn@latest add <component>
@@ -58,12 +58,12 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 - `src/routes/` - File-system routes. `routeTree.gen.ts` is auto-generated (DO NOT EDIT).
 - `src/routes/__root.tsx` - Root document shell, global providers, devtools.
 - Route files should be **thin**: routing, loaders, search params validation, page assembly only. Domain logic goes in `src/features/<name>/`.
-- Protected routes: use `_authed.tsx` layout guard pattern (prefix `_` = pathless layout).
+- Protected routes: use `_authenicated/route.tsx` layout guard pattern (prefix `_` = pathless layout).
 
 ### API Layer (oRPC)
 
 - `src/orpc/router/` - Server-side procedure definitions (Zod input validation).
-- `src/orpc/schema.ts` - Shared Zod schemas for input/output.
+- `src/orpc/procedure.ts` - Procedure middleware builders (`publicProcedure`, `protectedProcedure`).
 - `src/orpc/client.ts` - Isomorphic client: direct router call on server, RPCLink fetch on client. Exports `client` (raw) and `orpc` (TanStack Query utils).
 - `src/routes/api.rpc.$.ts` - RPC catch-all handler at `/api/rpc`.
 - `src/routes/api.$.ts` - OpenAPI handler at `/api` with auto-generated docs.
@@ -77,8 +77,9 @@ Two aliases resolve to `src/`: `@/` (Node subpath imports in package.json) and `
 
 ### Authentication (better-auth)
 
-- `src/lib/auth.ts` - Server-side auth config with `tanstackStartCookies()` plugin.
-- `src/lib/auth-client.ts` - Client-side auth instance (`authClient.useSession()`).
+- `src/lib/auth/index.ts` - Server-side auth config with Drizzle adapter and `tanstackStartCookies()` plugin.
+- `src/lib/auth/client.ts` - Client-side auth instance (`authClient.useSession()`).
+- `src/lib/auth/functions.ts` - Server functions for session retrieval (`getSession`, `ensureSession`).
 - `src/routes/api/auth/$.ts` - Auth catch-all route handler.
 
 ### Environment Variables

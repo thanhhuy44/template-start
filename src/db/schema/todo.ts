@@ -5,7 +5,7 @@ import { user } from "./user";
 export const todo = pgTable("todo", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
-  description: text("email").notNull(),
+  description: text("description").notNull(),
   status: text({
     enum: [
       "draft",

@@ -33,7 +33,7 @@ export const Route = createFileRoute("/posts/")({
 });
 ```
 
-### Protected Layout Guard (`src/routes/_authed.tsx`)
+### Protected Layout Guard (`src/routes/_authenicated/route.tsx`)
 
 ```tsx
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
@@ -59,7 +59,7 @@ export const Route = createFileRoute("/_authed")({
 
 ## 2. oRPC API Layer
 
-### Procedure Builder & Middleware Composition (`src/orpc/router/base.ts`)
+### Procedure Builder & Middleware Composition (`src/orpc/procedure.ts`)
 
 ```ts
 import { ORPCError, os } from "@orpc/server";
@@ -180,7 +180,7 @@ export const createPostWithAudit = async (
 
 ## 4. better-auth Authentication
 
-### Server Config (`src/lib/auth.ts`)
+### Server Config (`src/lib/auth/index.ts`)
 
 ```ts
 import { betterAuth } from "better-auth";
@@ -194,7 +194,7 @@ export const auth = betterAuth({
 });
 ```
 
-### Client Usage (`src/lib/auth-client.ts`)
+### Client Usage (`src/lib/auth/client.ts`)
 
 ```ts
 import { createAuthClient } from "better-auth/react";
